@@ -42,8 +42,7 @@ The script runs in two modes: -sender and -receiver.
 1) Sender Mode
 Encrypts and signs a plaintext file for multiple recipients, producing a single ZIP file containing all the necessary envelopes.
 Syntax:
-./crypto.sh -sender <receiver1_pub> <receiver2_pub> <receiver3_pub> \
-            <sender_priv> <plaintext_file> <zip_filename>
+./crypto.sh -sender <receiver1_pub> <receiver2_pub> <receiver3_pub> <sender_priv> <plaintext_file> <zip_filename>
 - <receiverX_pub>: Public key file for each recipient (e.g., receiver1.pub)
 - <sender_priv>: Sender’s private key file
 - <plaintext_file>: The file you want to encrypt
@@ -64,7 +63,7 @@ ________________________________________
 3.	Wrong Private Key: Attempt to decrypt with a different recipient’s private key. It should fail to derive the correct AES key.
 ________________________________________
 ## Error Handling
-- Prints errors to stderr with the prefix ERROR <username> whenever arguments or file checks fail.
+- Prints errors to stderr with the prefix ERROR whenever arguments or file checks fail.
 - Cleans up partial or temporary files on failure.
 - Checks for missing arguments and missing files.
 ________________________________________
