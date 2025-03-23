@@ -2,7 +2,7 @@
 
 # Ensuring at least one argument is provided
 if [ $# -lt 1 ]; then
-  echo "ERROR asnani.ma: No arguments provided." >&2
+  echo "ERROR: No arguments provided." >&2
   exit 1
 fi
 
@@ -12,7 +12,7 @@ case "$MODE" in
   "-sender")
     # Checking if required arguments are provided
     if [ $# -ne 7 ]; then
-      echo "ERROR asnani.ma: Incorrect number of arguments for sender mode." >&2
+      echo "ERROR: Incorrect number of arguments for sender mode." >&2
       echo "Usage: $0 -sender <receiver1_pub> <receiver2_pub> <receiver3_pub> <sender_priv> <plaintext_file> <zip_filename>" >&2
       exit 1
     fi
@@ -27,7 +27,7 @@ case "$MODE" in
     # Verifying that all input files exist
     for file in "$REC1_PUB" "$REC2_PUB" "$REC3_PUB" "$SENDER_PRIV" "$PLAINTEXT_FILE"; do
       if [ ! -f "$file" ]; then
-        echo "ERROR asnani.ma: File '$file' not found." >&2
+        echo "ERROR: File '$file' not found." >&2
         exit 1
       fi
     done
@@ -61,7 +61,7 @@ case "$MODE" in
   "-receiver")
     # Check if required arguments are provided
     if [ $# -ne 5 ]; then
-      echo "ERROR asnani.ma: Incorrect number of arguments for receiver mode." >&2
+      echo "ERROR: Incorrect number of arguments for receiver mode." >&2
       echo "Usage: $0 -receiver <receiver_priv> <sender_pub> <zip_file> <plaintext_file>" >&2
       exit 1
     fi
@@ -73,17 +73,17 @@ case "$MODE" in
 
     # Verify that the ZIP file exists
     if [ ! -f "$ZIP_FILE" ]; then
-      echo "ERROR asnani.ma: ZIP file '$ZIP_FILE' not found." >&2
+      echo "ERROR: ZIP file '$ZIP_FILE' not found." >&2
       exit 1
     fi
 
     # Extracting files from the ZIP file
-    unzip -o "$ZIP_FILE" || { echo "ERROR asnani.ma: Failed to extract ZIP file." >&2; exit 1; }
+    unzip -o "$ZIP_FILE" || { echo "ERROR: Failed to extract ZIP file." >&2; exit 1; }
 
     # Verifying the sender's signature
     openssl dgst -sha256 -verify "$SENDER_PUB" -signature signature.sig encrypted_file.enc
     if [ $? -ne 0 ]; then
-      echo "ERROR asnani.ma: Signature verification failed." >&2
+      echo "ERROR: Signature verification failed." >&2
       exit 1
     fi
 
@@ -100,14 +100,14 @@ case "$MODE" in
     done
 
     if [ "$DECRYPTED" = false ]; then
-      echo "ERROR asnani.ma: Digital Envelope Decryption failed. Private key provided cannot access any envelopes." >&2
+      echo "ERROR: Digital Envelope Decryption failed. Private key provided cannot access any envelopes." >&2
       exit 1
     fi
 
     # Decrypting the encrypted file using the AES session key
     openssl enc -aes-256-cbc -d -pbkdf2 -in encrypted_file.enc -out "$DECRYPTED_FILE" -pass file:aes_key.key
     if [ $? -ne 0 ]; then
-      echo "ERROR asnani.ma: File decryption failed." >&2
+      echo "ERROR: File decryption failed." >&2
       exit 1
     fi
 
@@ -118,7 +118,7 @@ case "$MODE" in
     ;;
 
   *)
-    echo "ERROR asnani.ma: Invalid mode. Use -sender or -receiver." >&2
+    echo "ERROR: Invalid mode. Use -sender or -receiver." >&2
     exit 1
     ;;
 esac
