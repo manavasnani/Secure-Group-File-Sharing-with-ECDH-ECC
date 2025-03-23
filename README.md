@@ -48,7 +48,7 @@ Syntax:
 - <plaintext_file>: The file you want to encrypt
 - <zip_filename>: Name of the final ZIP output (e.g., encrypted_package.zip)
 2) Receiver Mode
-Extracts, verifies, and decrypts the ZIP file to recover the original plaintext.
+Extracts, verifies, and decrypts the ZIP file to recover the original plaintext. \
 Syntax:
 ./crypto.sh -receiver <receiver_priv> <sender_pub> <zip_file> <plaintext_file>
 - <receiver_priv>: Recipient’s private key file
